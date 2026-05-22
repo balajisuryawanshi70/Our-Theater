@@ -1,56 +1,136 @@
+// import { Inngest } from "inngest";
+// import User from "../models/User.js";
+
+// // Create Inngest Client
+// export const inngest = new Inngest({
+//   id: "movie-ticket-booking"
+// });
+
+// // Sync User Creation
+// const syncUserCreation = inngest.createFunction({
+//   id:'sync-user-from-clerk',
+//   trigger:{event:'clerk/user.created'},},
+//   async({event})=>{
+//     const {id, first_name, last_name, email_addresses, image_url} = event.data
+//     const userData = {
+//       _id:id,
+//       email: email_addresses[0].email_address,
+//       name: first_name + ' ' + last_name,
+//       image: image_url
+//     }
+//     await User.create(userData)
+//   }
+// )
+
+// // Sync User Deletion
+// const syncUserDeletion = inngest.createFunction({
+//   id:'delete-user-from-clerk',
+//   rigger: {event:'clerk/user.deleted'},},
+//   async({event})=>{
+//     const {id} = event.data
+//     await User.findByIdAndDelete(id)
+//   }
+// )
+
+// // Sync User Update
+// const syncUserUpdation = inngest.createFunction(
+//   {id:'update-user-from-clerk'},
+//   {event:'clerk/user.updated'},
+//   async({event})=>{
+//     const {id, first_name, last_name, email_addresses, image_url} = event.data
+//     const userData = {
+//       _id:id,
+//       email: email_addresses[0].email_address,
+//       name: first_name + ' ' + last_name,
+//       image: image_url
+//     }
+//     await User.findByIdAndUpdate(id, userData)
+//   }
+// )
+
+// // Export Functions
+// export const functions = [
+//   syncUserCreation,
+//   syncUserDeletion,
+//   syncUserUpdation
+// ];
+
 import { Inngest } from "inngest";
 import User from "../models/User.js";
 
 // Create Inngest Client
 export const inngest = new Inngest({
-  id: "movie-ticket-booking"
+  id: "movie-ticket-booking",
 });
 
 // Sync User Creation
-const syncUserCreation = inngest.createFunction({
-  id:'sync-user-from-clerk',
-  trigger:{event:'clerk/user.created'},},
-  async({event})=>{
-    const {id, first_name, last_name, email_addresses, image_url} = event.data
+const syncUserCreation = inngest.createFunction(
+  {
+    id: "sync-user-from-clerk",
+    trigger: { event: "clerk/user.created" },
+  },
+  async ({ event }) => {
+    const {
+      id,
+      first_name,
+      last_name,
+      email_addresses,
+      image_url,
+    } = event.data;
+
     const userData = {
-      _id:id,
+      _id: id,
       email: email_addresses[0].email_address,
-      name: first_name + ' ' + last_name,
-      image: image_url
-    }
-    await User.create(userData)
+      name: first_name + " " + last_name,
+      image: image_url,
+    };
+
+    await User.create(userData);
   }
-)
+);
 
 // Sync User Deletion
-const syncUserDeletion = inngest.createFunction({
-  id:'delete-user-from-clerk',
-  rigger: {event:'clerk/user.deleted'},},
-  async({event})=>{
-    const {id} = event.data
-    await User.findByIdAndDelete(id)
+const syncUserDeletion = inngest.createFunction(
+  {
+    id: "delete-user-from-clerk",
+    trigger: { event: "clerk/user.deleted" },
+  },
+  async ({ event }) => {
+    const { id } = event.data;
+
+    await User.findByIdAndDelete(id);
   }
-)
+);
 
 // Sync User Update
 const syncUserUpdation = inngest.createFunction(
-  {id:'update-user-from-clerk'},
-  {event:'clerk/user.updated'},
-  async({event})=>{
-    const {id, first_name, last_name, email_addresses, image_url} = event.data
+  {
+    id: "update-user-from-clerk",
+    trigger: { event: "clerk/user.updated" },
+  },
+  async ({ event }) => {
+    const {
+      id,
+      first_name,
+      last_name,
+      email_addresses,
+      image_url,
+    } = event.data;
+
     const userData = {
-      _id:id,
+      _id: id,
       email: email_addresses[0].email_address,
-      name: first_name + ' ' + last_name,
-      image: image_url
-    }
-    await User.findByIdAndUpdate(id, userData)
+      name: first_name + " " + last_name,
+      image: image_url,
+    };
+
+    await User.findByIdAndUpdate(id, userData);
   }
-)
+);
 
 // Export Functions
 export const functions = [
   syncUserCreation,
   syncUserDeletion,
-  syncUserUpdation
+  syncUserUpdation,
 ];
